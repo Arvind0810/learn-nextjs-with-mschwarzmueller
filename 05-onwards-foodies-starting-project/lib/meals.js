@@ -2,6 +2,15 @@ import sql from 'better-sqlite3'
 import slugify from 'slugify'
 import xss from 'xss'
 import fs from 'node:fs'
+import { S3 } from '@aws-sdk/client-s3'
+
+const s3 = new S3({
+    region: 'ap-south-1',
+    credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+})
 
 const db = sql('meals.db')
 
@@ -21,15 +30,17 @@ export async function saveMeal(meal){
 
     const extension = meal.image.name.split('.').pop()
     const fileName = `${meal.slug}.${extension}`
-
-    const stream = fs.createWriteStream(`public/images/${fileName}`)    
+   
     const bufferedImage = await meal.image.arrayBuffer()
 
-    stream.write(Buffer.from(bufferedImage), (error) => {
-        if(error) throw new Error(`Saving image failed!`)
-    })
-
-    meal.image = `/images/${fileName}`
+    await s3.putObject({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: fileName,
+        Body: Buffer.from(bufferedImage),
+        ContentType: meal.image.type,
+      })
+      .then(() => {
+        meal.image = fileName
 
     db.prepare(`
         INSERT INTO meals
@@ -44,4 +55,10 @@ export async function saveMeal(meal){
             @slug
         )
         `).run(meal)
+      })
+      .catch((error) => {
+        console.error('Failed to upload file: ' + error)
+      })
+    
+    
 }
