@@ -1,10 +1,11 @@
-import { getAllNews, getAvailableNewsYears } from "@/lib/news"
+import { getAvailableNewsYears } from "@/lib/news"
 import Link from "next/link"
 
-export default function ArvhivePage(){
+
+export default function FilterNewsPage({params}){
+    const filter = params.filter
+    console.log(filter)
     const links = getAvailableNewsYears()
-    const posts = getAllNews()
-    console.log(links)
     return (
         <header id="archive-header">
             <nav>
