@@ -1,6 +1,7 @@
 import NewsList from "@/components/news/news-list"
 import { getNewsForYearAndMonth,getAvailableNewsMonths, getAvailableNewsYears, getNewsForYear } from "@/lib/news"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 
 
 export default function FilterNewsPage({params}){
@@ -26,8 +27,9 @@ export default function FilterNewsPage({params}){
     if(news && news.length > 0){
         newsContent = <NewsList news={news} />
     }
-    console.log(filter)
-    
+    if((year && !getAvailableNewsYears().includes(+year)) || (month && !getAvailableNewsMonths(year).includes(+month))){
+        throw new Error('Invalid request.')
+    }    
     return (
         <>
         <header id="archive-header">
