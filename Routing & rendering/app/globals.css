@@ -157,6 +157,7 @@ ul {
   box-shadow: 0 0 10px 0 #181817;
   max-width: 50rem;
   width: 100%;
+  position: absolute;
 }
 
 .modal h2,
