@@ -9,9 +9,12 @@ export default function ImagePreview({params}){
     }
 
     return <>
-    <h2>Intercepted!</h2>
-    <div className="fullscreen-image" >
-        <img src={`/images/news/${newsItem.image}`} alt={newsItem.title} />
+    <div className="modal-backdrop" >
+    <dailog className="modal" open >
+        <div className="fullscreen-image" >
+            <img src={`/images/news/${newsItem.image}`} alt={newsItem.title} style={{maxWidth:'100%'}} />
+        </div>
+    </dailog>
     </div>
     </>
 }
