@@ -1,9 +1,10 @@
-import { DUMMY_NEWS } from "@/dummy-news"
+import { getNewsItem } from "@/lib/news"
 import { notFound } from "next/navigation"
 
-export default function ImagePreview({params}){
+export default async function ImagePreview({params}){
     const {slug} = params
-    const newsItem = DUMMY_NEWS.find((news) => news.slug === slug)
+    const newsItem = await getNewsItem(slug)
+    
     if(!newsItem){
         notFound()
     }
