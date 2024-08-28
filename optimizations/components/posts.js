@@ -5,19 +5,33 @@ import { useOptimistic } from 'react';
 import { formatDate } from '@/lib/format';
 import LikeButton from './like-icon';
 import { togglePostLikeStatus } from '@/actions/posts';
+import Image from 'next/image';
 
 function Post({ post, action }) {
+  function imageLoader(config){
+    const urlStart = config.src.split('upload/')[0]
+    const urlEnd = config.src.split('upload/')[1]
+    const transformation = `w_200,q_${config.quality}`
+    return `${urlStart}upload/${transformation}/${urlEnd}`
+  }
   return (
     <article className="post">
       <div className="post-image">
-        <img src={post.image} alt={post.title} />
+        <Image
+          loader={imageLoader}
+          src={post.image}
+          alt={post.title}
+          width={200}
+          height={120}
+          quality={50}
+        />
       </div>
       <div className="post-content">
         <header>
           <div>
             <h2>{post.title}</h2>
             <p>
-              Shared by {post.userFirstName} on{' '}
+              Shared by {post.userFirstName} on{" "}
               <time dateTime={post.createdAt}>
                 {formatDate(post.createdAt)}
               </time>
@@ -26,7 +40,7 @@ function Post({ post, action }) {
           <div>
             <form
               action={action.bind(null, post.id)}
-              className={post.isLiked ? 'liked' : ''}
+              className={post.isLiked ? "liked" : ""}
             >
               <LikeButton />
             </form>
