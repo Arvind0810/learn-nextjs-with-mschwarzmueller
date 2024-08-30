@@ -7,8 +7,8 @@ export function createUser(email, password){
     return result.lastInsertRowid
 }
 
-export function getUser(email){
+export function getUserByEmail(email){
     const result = db
-    .prepare('SELECT * FROM users WHERE email = ?').run(email)
+    .prepare('SELECT * FROM users WHERE email = ?').get(email)
     return result
 }
