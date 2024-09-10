@@ -3,6 +3,7 @@ import { getFilteredEvents } from "../../helpers/api-util"
 import EventList from "../../components/events/event-list"
 import ResultsTitle from "../../components/events/results-title"
 import Link from "next/link"
+import Head from "next/head"
 
 function FilteredEventPage(props){
     const router = useRouter()
@@ -31,6 +32,13 @@ function FilteredEventPage(props){
     }
     const date = new Date(props.date.year, props.date.month - 1)
     return <>
+        <Head >
+            <title>Search Result</title>
+            <meta 
+            name="description"
+            content="Event search results"
+            />
+        </Head>
         <ResultsTitle date={date} />
         <EventList items={filteredEvents} />
     </>
