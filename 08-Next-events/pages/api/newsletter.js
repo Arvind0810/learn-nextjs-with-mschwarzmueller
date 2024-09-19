@@ -1,8 +1,8 @@
-import { MongoClient } from 'mongodb'
+
+import { registerNewsleter } from '../../db-utility/utility'
 
 async function handler(req, res){
-    const username = process.env.MONGODB_USERNAME
-    const password = process.env.MONGODB_PASSWORD
+    
     if(req.method === 'POST'){
         const userEmail = req.body.email
 
@@ -11,15 +11,12 @@ async function handler(req, res){
             return
         }
 
-        const client = await MongoClient.connect(`mongodb+srv://${username}:${password}@testdbs.0bchy.mongodb.net/?retryWrites=true&w=majority&appName=testdbs`)
-        
-        const db = client.db('events')
+        const newUser = await registerNewsleter(userEmail)
 
-        await db.collection('emails').insertOne({email: userEmail})
-
-        client.close()
-
-        res.status(201).json({message: "Sign up!"})
+        res.status(201).json({
+            message: 'Newsleter registered successfully',
+            data: newUser
+        })
     }
 }
 
