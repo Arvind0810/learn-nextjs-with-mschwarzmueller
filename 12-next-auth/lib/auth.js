@@ -1,7 +1,9 @@
-import { hash } from 'bcryptjs'
+import { compare, hash } from 'bcryptjs'
 
-async function hashPassword(password){
+export async function hashPassword(password){
     return await hash(password, 12)
 }
 
-export default hashPassword
+export async function verifyPassword(password, hashedPassword){
+    return await compare(password, hashedPassword)
+}

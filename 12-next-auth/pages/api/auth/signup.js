@@ -1,4 +1,4 @@
-import hashPassword from "../../../lib/auth"
+import { hashPassword } from "../../../lib/auth"
 import connectDB from "../../../lib/db"
 
 async function handler(req, res){
@@ -22,6 +22,7 @@ async function handler(req, res){
 
         if(exestingEmail){
             return res.status(422).json({message: "User with this email already exists"})
+            client.close()
         }
 
         const hashedPassword = await hashPassword(password)
