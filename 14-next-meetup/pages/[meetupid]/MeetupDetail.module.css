@@ -1,0 +1,13 @@
+.detail img{
+    width: 100%;
+}
+.detail{
+    text-align: center;
+}
+.image{
+    width: 100%;
+}
+.title{
+    font-size: 1.5rem;
+    color: black;
+}
